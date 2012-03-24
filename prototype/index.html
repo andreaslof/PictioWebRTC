@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link href='http://fonts.googleapis.com/css?family=Ewert' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Yesteryear' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
@@ -33,22 +34,15 @@
     <div id="game">
         <div class="top">
             <div class="header">
-                <div class="container">
-                    <div class="row">
-                        <div class="btn-group">
-                            <span class="btn" id="win">Win</span>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="container">
                 <div class="game row">
                     <div class="span5">
                         <h2 id="player1-name"></h2>
-                        <video id="player1" class="player-stream" autoplay></video>
+                        <video id="player1" class="mask player-stream" autoplay></video>
                     </div>
                     <div class="span2">
-                        <span id="go-btn">Go</span>
+                        <span id="go-btn" class="btn">Go</span>
                         <ul class="one-two-three">
                             <li id="one" class="step">1</li>
                             <li id="two" class="step">2</li>
@@ -58,26 +52,20 @@
                     </div>
                     <div class="span5">
                         <h2 id="player2-name"></h2>
-                        <video id="player2" class="player-stream" autoplay></video>
+                        <video id="player2" class="mask player-stream" autoplay></video>
                     </div>
                 </div>
+                <div class="row" id="action"></div>
             </div>
         </div>
         <div class="previous-games">
-            <div class="container">
-                <div class="row">
-                    <ul id="player1-results" class="player-results span5">
-                    </ul>
-                    <ul class="span2">
-                        <li>.</li>
-                    </ul>
-                    <ul id="player2-results" class="player-results span5">
-                    </ul>
-                </div>
+            <div class="container" id="results">
             </div>
         </div>
     </div>
 </div>
+
+<canvas id="photo" style="display:none"></canvas>
 
     <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="js/underscore-min.js"></script>
@@ -85,12 +73,32 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
     <script id="archive-item" type="text/x-underscore-template">
-        <div class="pin"></div>
-        <div class="player1">
-            <img src="<%= player1 %>" />
-        </div>
-        <div class="player2">
-            <img src="<%= player1 %>" />
+        <div class="row">
+            <div class="span5">
+                <div class="player-results clearfix">
+                    <div class="pin"></div>
+                    <div class="player player1">
+                        <img src="<%= player1 %>" />
+                    </div>
+                    <div class="player">
+                        <img src="<%= player1 %>" />
+                    </div>
+                </div>
+            </div>
+            <div class="span2">
+                <div class="winner"><%= winner %></div>
+            </div>
+            <div class="span5">
+                <div class="player-results clearfix">
+                    <div class="pin"></div>
+                    <div class="player player1">
+                        <img src="<%= player3 %>" />
+                    </div>
+                    <div class="player">
+                        <img src="<%= player4 %>" />
+                    </div>
+                </div>
+            </div>
         </div>
     </script>
 </body>
