@@ -31,7 +31,7 @@ onUserMediaSuccess = function (stream) {
 	console.log('User granted access!');
 	video.src = window.webkitURL.createObjectURL(stream);
 	setTimeout(takePhoto,500,localImg);
-	setTimeout(takePhoto,4000,remoteImg);
+	setTimeout(takePhoto,2000,remoteImg);
 };
 
 onUserMediaError = function (error) {
@@ -70,19 +70,23 @@ takePhoto = function (img) {
 
 diffImg = function () {
 	diffCtx.putImageData(imagediff.diff(localImg,remoteImg),0,0);
-	var tolerance = [250,240,230,220,210,200,175,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1],
+	var tolerance = [],
+			//tolerance = [250,240,230,220,210,200,175,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1],
 			diffSum = [],
 			points = {
 				point: 0,
-				total: tolerance.length
+				total: 0
 			},
 			sum;
+	for ( var j = 50; j > 0; j-=2 ) tolerance.push(j);
+	points.total = tolerance.length;
 	for ( var i = 0; i < tolerance.length; i++ ) {
 		var rand = Math.floor(Math.random() * (260-100+1)) + 100;
 		diffSum[i] = imagediff.equal(localImg,remoteImg,tolerance[i]);
 		//console.log(rand,diffSum[i]);
 		console.log("tolerance:"+tolerance[i]+"px\n"+diffSum[i]);
 		if ( diffSum[i] ) points.point++;
+		console.log(points.point);
 	}
 	sum = points.point / points.total;
 	console.log(sum);
