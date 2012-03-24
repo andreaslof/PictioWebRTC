@@ -1,12 +1,17 @@
 init = function () {
 	video = document.getElementById('video');
-	canvas = document.getElementById('canvas');
-	img1 = document.getElementById('img1');
-	img2 = document.getElementById('img2');
-	context = canvas.getContext('2d');
+	local = document.getElementById('local');
+	remote = document.getElementById('remote');
+	localImg = document.getElementById('localImg');
+	remoteImg = document.getElementById('remoteImg');
+	diff = document.getElementById('diff');
+	localCtx = local.getContext('2d');
+	remoteCtx = remote.getContext('2d');
+	diffCtx = diff.getContext('2d');
+	imgArray = [];
 
-	canvas.width = 320;
-	canvas.height = 240;
+	local.width = 320;
+	local.height = 240;
 
 	getUserMedia();
 };
@@ -24,18 +29,20 @@ getUserMedia = function () {
 
 onUserMediaSuccess = function (stream) {
 	console.log('User granted access!');
-	localStream = stream;
 	video.src = window.webkitURL.createObjectURL(stream);
+	setTimeout(takePhoto,500,localImg);
+	setTimeout(takePhoto,4000,remoteImg);
 };
 
 onUserMediaError = function (error) {
 	console.log('Failed, error code:'+error.code);
 };
 
+// @arg img : ID for img-tag
 takePhoto = function (img) {
-	context.drawImage(video,0,0,320,240);
+	localCtx.drawImage(video,0,0,320,240);
 
-	var idata = context.getImageData(0,0,320,240),
+	var idata = localCtx.getImageData(0,0,320,240),
 			data = idata.data,
 			w = idata.width,
 			limit = data.length;
@@ -49,7 +56,7 @@ takePhoto = function (img) {
 				g = data[i+1],
 				b = data[i+2],
 				//brightness = (3*r+4*g+b)>>>3;
-				brightness = (3*127+4*(g+b)*-0.4)>>>3;
+				brightness = (3.5*127+4*(g+b)*-0.18)>>>3;
 		data[i] = brightness;
 		data[i+1] = brightness;
 		data[i+2] = brightness;
@@ -57,12 +64,26 @@ takePhoto = function (img) {
 
 	idata.data = data;
 
-	context.putImageData(idata,0,0);
-
-	img.src = canvas.toDataURL('image/png');
-	//video.style.opacity = 0.7;
+	localCtx.putImageData(idata,0,0);
+	img.src = local.toDataURL('image/png');
 };
 
 diffImg = function () {
-
+	diffCtx.putImageData(imagediff.diff(localImg,remoteImg),0,0);
+	var tolerance = [250,240,230,220,210,200,175,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1],
+			diffSum = [],
+			points = {
+				point: 0,
+				total: tolerance.length
+			},
+			sum;
+	for ( var i = 0; i < tolerance.length; i++ ) {
+		var rand = Math.floor(Math.random() * (260-100+1)) + 100;
+		diffSum[i] = imagediff.equal(localImg,remoteImg,tolerance[i]);
+		//console.log(rand,diffSum[i]);
+		console.log("tolerance:"+tolerance[i]+"px\n"+diffSum[i]);
+		if ( diffSum[i] ) points.point++;
+	}
+	sum = points.point / points.total;
+	console.log(sum);
 };

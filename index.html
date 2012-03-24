@@ -20,11 +20,14 @@
 </style>
 <body onload="init()">
 	<div id="main">
-		<canvas id="canvas" style="display:none;"></canvas>
+		<canvas id="local" style="display:none;"></canvas>
+		<canvas id="remote" style="display:none;"></canvas>
 		<video id="video" autoplay></video><!-- /localVideo -->
-		<img id="img1" src="" />
-		<img id="img2" src="" />
+		<img id="localImg" src="" />
+		<img id="remoteImg" src="" />
+		<canvas id="diff"></canvas>
 	</div><!-- /main -->
 </body>
+<script type="text/javascript" src="imagediff.js"></script>
 <script type="text/javascript" src="video.js"></script>
 </html>
