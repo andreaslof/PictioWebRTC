@@ -56,7 +56,7 @@ takePhoto = function (img) {
 				g = data[i+1],
 				b = data[i+2],
 				//brightness = (3*r+4*g+b)>>>3;
-				brightness = (3.5*127+4*(g+b)*-0.18)>>>3;
+				brightness = (4*127+4*(g+b)*-0.18)>>>3;
 		data[i] = brightness;
 		data[i+1] = brightness;
 		data[i+2] = brightness;
@@ -78,7 +78,7 @@ diffImg = function () {
 				total: 0
 			},
 			sum;
-	for ( var j = 50; j > 0; j-=2 ) tolerance.push(j);
+	for ( var j = 150; j > 0; j-=5 ) tolerance.push(j);
 	points.total = tolerance.length;
 	for ( var i = 0; i < tolerance.length; i++ ) {
 		var rand = Math.floor(Math.random() * (260-100+1)) + 100;
