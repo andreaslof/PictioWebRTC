@@ -4,33 +4,94 @@
     <title></title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Ewert' rel='stylesheet' type='text/css'>
 </head>
 <body>
-    <h1>HELLO world</h1>
-    <div class="game row">
-        <div class="span5">
-        </div>
-        <div class="span2">
-        </div>
-        <div class="span5">
+
+    <div id="welcome">
+        <div class="container">
+            <form class="well form-inline">
+                <legend>Welcome</legend>
+                <input type="text" class="input-large" placeholder="Name">
+                <input type="text" class="input-large" placeholder="Room">
+                <a class="btn show-loading" data-toggle="modal" href="#loading" id="create">Create</a>
+                <a class="btn show-loading" data-toggle="modal" href="#loading" id="join">Join</a>
+            </form>
         </div>
     </div>
-    <div class="previous-games row">
-        <ul class="player player1 span5">
-            <li>
-                <div class="player1"></div>
-                <div class="player2"></div>
-            </li>
-        </ul>
-        <ul class="span2">
-            <li></li>
-        </ul>
-        <ul class="player player2 span5">
-            <li>
-                <div class="player1"></div>
-                <div class="player2"></div>
-            </li>
-        </ul>
+
+    <div class="modal fade" id="loading">
+        <div class="modal-body">
+            <p class="loader">Loading...</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-danger float-left" data-dismiss="modal">Close</a>
+            <a href="#" class="btn" id="ready" data-dismiss="modal">I'm ready</a>
+        </div>
     </div>
+
+    <div id="game">
+        <div class="top">
+            <div class="header">
+                <div class="container">
+                    <div class="row">
+                        <div class="btn-group">
+                            <span class="btn" id="win">Win</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="game row">
+                    <div class="span5">
+                        <h2 id="player1-name"></h2>
+                        <video id="player1" class="player-stream" autoplay></video>
+                    </div>
+                    <div class="span2">
+                        <span id="go-btn">Go</span>
+                        <ul class="one-two-three">
+                            <li id="one" class="step">1</li>
+                            <li id="two" class="step">2</li>
+                            <li id="three" class="step">3</li>
+                            <li id="go" class="step">Pic!</li>
+                        </ul>
+                    </div>
+                    <div class="span5">
+                        <h2 id="player2-name"></h2>
+                        <video id="player2" class="player-stream" autoplay></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="previous-games">
+            <div class="container">
+                <div class="row">
+                    <ul id="player1-results" class="player-results span5">
+                    </ul>
+                    <ul class="span2">
+                        <li>.</li>
+                    </ul>
+                    <ul id="player2-results" class="player-results span5">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+    <script id="archive-item" type="text/x-underscore-template">
+        <div class="pin"></div>
+        <div class="player1">
+            <img src="<%= player1 %>" />
+        </div>
+        <div class="player2">
+            <img src="<%= player1 %>" />
+        </div>
+    </script>
 </body>
 </html>
