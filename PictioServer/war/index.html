@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Pictogram</title>
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+<script type="text/javascript" src="/_ah/channel/jsapi"></script>
+</head>
+<script type="text/javascript">
+	var channel = null;
+	var socket = null;
+	var token = null;
+	var user = null;
+	var game = null;
+	
+	function startGetChannel() {
+		game = $("#gameId").val();
+		user = $("userId").val();
+		var q = {
+				"c":"start",
+				"game":game,
+				"user": user
+				};
+		$.getJSON("/pictioserver", q, function(data){
+			console.log(data);
+			if (data["status"] =="ok") {
+				token = data["token"];
+				$("#startId").show();
+			}
+		});
+	}
+	
+	function sendMessage() {
+		var q = {
+				"c":"message",
+				"game":game,
+				"user": user,
+				"token": token,
+				"m": $("#messageId").val()
+				};
+
+		$.getJSON("/pictioserver", q, function(data){
+			console.log(data);
+			if (data["status"] =="ok") {
+				$("#output").append("me: " + q["m"] + "\n");
+			}
+		});
+	}
+	
+	function start() {
+		channel = new goog.appengine.Channel(token);
+		socket = channel.open();
+		socket.onopen = onOpened;
+		socket.onmessage = onMessage;
+		socket.onerror = onError;
+		socket.onclose = onClose;
+
+		function onOpened( e) {
+			console.log("onOpened", e);
+		}
+
+		function onMessage(m ) {
+			console.log("onMessage", m);
+			$("#output").append(m["message"] + "\n");
+		}
+
+		function onError(e) {
+			console.log("onError", e);
+		}
+
+		function onClose(e) {
+			console.log("onClose", e);
+		}
+	}
+	
+	$(function() {
+		//$.getJSON("pictoserver", {"user", user, "game",game })
+		$("#loginId").click(startGetChannel);
+		$("#startId").click(start);
+		$("#sendId").click(sendMessage);
+		$("#startId").hide();
+	});
+</script>
+
+<body>
+	<h1>Pictio</h1>
+
+	<table>
+		<tr>
+			<td colspan="2" style="font-weight: bold;">Available Servlets:</td>
+		</tr>
+		<tr>
+		<label>User</label><input type="text" id="userId" /></br>
+		<label>Game</label><input type="text" id="gameId" /></br>
+		<button id="loginId">Login</button></br>
+		<button id="startId">Start</button></br>
+		</br>
+		<label>Send message</label><input type="text" id="messageId" /></br>
+		<button id="sendId">Send message</button>
+
+
+		</tr>
+		<tr>
+			<td><a href="pictioserver">PictioServer</a></td>
+		</tr>
+	</table>
+	<div id="output"></div>
+</body>
+</html>
