@@ -30,8 +30,8 @@ getUserMedia = function () {
 onUserMediaSuccess = function (stream) {
 	console.log('User granted access!');
 	video.src = window.webkitURL.createObjectURL(stream);
-	setTimeout(takePhoto,500,localImg);
-	setTimeout(takePhoto,2000,remoteImg);
+	setTimeout(takePhoto,300,localImg);
+	//setTimeout(takePhoto,6000,remoteImg);
 };
 
 onUserMediaError = function (error) {
@@ -56,7 +56,7 @@ takePhoto = function (img) {
 				g = data[i+1],
 				b = data[i+2],
 				//brightness = (3*r+4*g+b)>>>3;
-				brightness = (4*127+4*(g+b)*-0.18)>>>3;
+				brightness = (4*127+4*(g*1.2+b*1.2)*-0.18)>>>3;
 		data[i] = brightness;
 		data[i+1] = brightness;
 		data[i+2] = brightness;
@@ -71,7 +71,6 @@ takePhoto = function (img) {
 diffImg = function () {
 	diffCtx.putImageData(imagediff.diff(localImg,remoteImg),0,0);
 	var tolerance = [],
-			//tolerance = [250,240,230,220,210,200,175,150,140,130,120,110,100,90,80,70,60,50,40,30,20,10,9,8,7,6,5,4,3,2,1],
 			diffSum = [],
 			points = {
 				point: 0,
@@ -81,9 +80,7 @@ diffImg = function () {
 	for ( var j = 150; j > 0; j-=5 ) tolerance.push(j);
 	points.total = tolerance.length;
 	for ( var i = 0; i < tolerance.length; i++ ) {
-		var rand = Math.floor(Math.random() * (260-100+1)) + 100;
 		diffSum[i] = imagediff.equal(localImg,remoteImg,tolerance[i]);
-		//console.log(rand,diffSum[i]);
 		console.log("tolerance:"+tolerance[i]+"px\n"+diffSum[i]);
 		if ( diffSum[i] ) points.point++;
 		console.log(points.point);
